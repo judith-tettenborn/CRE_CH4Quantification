@@ -46,8 +46,6 @@ indiv_peak_plots = True # plot individual peaks for QC? ATTENTION: when True thi
 
 ################################################################################################
 
-
-path_base = Path('C:/Users/Judit/Documents/UNI/Utrecht/Hiwi/CRE_CH4Quantification/')
 sys.path.append(str(path_base / 'src'))
 
 # In Python, the "Python path" refers to the list of directories where Python looks for modules
