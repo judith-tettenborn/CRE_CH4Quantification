@@ -46,8 +46,6 @@ L1_d2_LGR   = pd.read_excel(path_procdata / 'L1_G23andLGRandLicor.xlsx',sheet_na
 L1_d2_G2301 = pd.read_excel(path_procdata / 'L1_G23andLGRandLicor.xlsx',sheet_name='D2_G2301', index_col='Datetime') 
 L1_d3_Licor = pd.read_excel(path_procdata / 'L1_G23andLGRandLicor.xlsx',sheet_name='D3_Licor', index_col='Datetime')  
 L1_d3_G2301 = pd.read_excel(path_procdata / 'L1_G23andLGRandLicor.xlsx',sheet_name='D3_G2301', index_col='Datetime') 
-L1_d4_Licor = pd.read_excel(path_procdata / 'L1_G23andLGRandLicor.xlsx',sheet_name='D4_Licor', index_col='Datetime')  
-L1_d4_G2301 = pd.read_excel(path_procdata / 'L1_G23andLGRandLicor.xlsx',sheet_name='D4_G2301', index_col='Datetime') 
 L1_d5_G2301 = pd.read_excel(path_procdata / 'L1_G23andLGRandLicor.xlsx',sheet_name='D5_G2301', index_col='Datetime')  
 
 # London II
@@ -204,22 +202,6 @@ L1_vars_d3_G23 = {'df': L1_d3_G2301,
                  'city':    'London I',
                  'day':     'Day3'
                  }
-L1_vars_d4_Licor = {'df': L1_d4_Licor,
-                  'CH4col': 'CH4_ele_Licor', 
-                  'spec':   'Licor',
-                  'name':   'Licor',
-                  'title':  'LI-7810',
-                  'city':   'London I',
-                  'day':    'Day4'
-                  }
-L1_vars_d4_G23 = {'df': L1_d4_G2301,
-                  'CH4col': 'CH4_ele_G23',
-                  'spec':   'G23',
-                  'name':   'G2301',
-                  'title':  'G2301',
-                  'city':   'London I',
-                  'day':    'Day4'
-                  }
 L1_vars_d5_G23 = {'df': L1_d5_G2301,
                  'CH4col':  'CH4_ele_G23', 
                  'spec':    'G23',

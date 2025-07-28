@@ -2,7 +2,7 @@
 """
 Created on Thu Feb 15 15:35:58 2024
 
-@author: Judith
+@author: Judith Tettenborn (j.a.f.tettenborn@uu.nl)
 """
 
 # Import necessary packages

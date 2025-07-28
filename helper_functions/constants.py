@@ -4,6 +4,8 @@ Created on Mon Jun 23 15:11:24 2025
 
 @author: Judith Tettenborn (j.a.f.tettenborn@uu.nl)
 
+constants and colour & name dictionaries used throughout the project
+
 """
 
 
@@ -35,9 +37,14 @@ DIST_AERIS = 15
 WIDTH_AERIS = (1,45)
 
 
+slope_max = 0.854
+yintercept_max = -1.25
+slope_area = 0.774
+yintercept_area = 1.84
 
 
-
+# Cap for emission rates in Monte Carlo analysis
+CAP = 200 #L/min
 
 
 
@@ -70,6 +77,19 @@ dict_color_city = {'Rotterdam':         'orange',
                    'London IIDay2':     'chocolate'
                    }
 
+
+dict_color_category = {'1-VL':      'lightgray',
+                       '2-Low':     'gold',
+                       '3-Medium':  'orange',
+                       '4-High':    'red'
+                      }
+
+# Explanation for the (somewhat confusing and unnecessarily complicated) namings:
+# spec: abbreviation used in the variable names in the code
+# name: name used for the different instruments which is a mix of actual instrument 
+#       names and brand names (due to past dependencies in the code)
+# title: proper instrument name as it appears in the publication
+
 dict_instr_names = {'Miro':     'MGA10', 
                     'Aerodyne': 'TILDAS', 
                     'G4302':    'G4302',
@@ -89,5 +109,7 @@ dict_spec_instr = {'G2301':     'G23',
                    'G2401':     'G24',
                    'Licor':     'Licor'
                    }
+
+
 
 
