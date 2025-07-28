@@ -75,7 +75,7 @@ from helper_functions.constants import (
 path_dataU1     = path_base / 'data' / 'raw' / 'Utrecht_I_2022'
 path_dataU2     = path_base / 'data' / 'raw' / 'Utrecht_II_2024'
 path_dataT      = path_base / 'data' / 'raw' / 'Toronto_2021'
-path_dataL1     = path_base / 'data' / 'raw' / 'London_I_2019' / 'Pic_uMEA_LiCOR_data'
+path_dataL1     = path_base / 'data' / 'raw' / 'London_I_2019'
 path_dataL2     = path_base / 'data' / 'raw' / 'London_II_2024'
 path_dataR      = path_base / 'data' / 'raw' / 'Rotterdam_2022'
 
@@ -91,8 +91,8 @@ path_processeddata = path_base / 'data' / 'processed'
 
 
 overviewplot        = True     # Plot the find_peaks result
-writexlsx           = True     # save peaks into excel file
-indiv_peak_plots    = True     # plot individual peaks for QC? ATTENTION: when True this will create several hundreds of figures PER instrument
+writexlsx           = False     # save peaks into excel file
+indiv_peak_plots    = False     # plot individual peaks for QC? ATTENTION: when True this will create several hundreds of figures PER instrument
 
 
 
@@ -1364,7 +1364,7 @@ path_fig = path_res / 'Figures' / 'London_I_2019/'
 # Release Coordinates London
 release_loc1 = (-0.437888,52.233343)
 
-L1_LGR_d2, L1_G2301_d2, L1_LGR_d3, L1_G2301_d3, L1_Licor_d3, L1_LGR_d4, L1_G2301_d4, L1_Licor_d4, L1_G2301_d5 = read_and_preprocess_L1(path_dataL1,path_processeddata ,writexlsx=writexlsx)
+L1_LGR_d2, L1_G2301_d2, L1_LGR_d3, L1_G2301_d3, L1_Licor_d3, L1_LGR_d4, L1_G2301_d4, L1_Licor_d4, L1_G2301_d5 = read_and_preprocess_L1(path_dataL1, path_processeddata, writexlsx=writexlsx)
 
 # Set the name attribute for each dataframe
 L1_LGR_d2.name = 'LGR'
@@ -1532,14 +1532,11 @@ if not (path_res / 'Figures' / 'London_II_2024').is_dir(): # output: figures
 path_fig = path_res / 'Figures' / 'London_II_2024/'
 
 
-
 L2_Licor_d1, L2_Licor_d2 = read_and_preprocess_L2(path_dataL2, path_processeddata, writexlsx=writexlsx)
 
 # Set the name attribute for each dataframe
 L2_Licor_d1.name = 'Licor'
 L2_Licor_d2.name = 'Licor'
-
-
 
 
 #%%% Find Peaks
@@ -1650,7 +1647,6 @@ if not (path_res / 'Figures' / 'Rotterdam_2022').is_dir(): # output: figures
     (path_res / 'Figures' / 'Rotterdam_2022').mkdir(parents=True)
 path_fig = path_res / 'Figures' / 'Rotterdam_2022/'
 
-
 starttime       = pd.to_datetime('2022-09-06 06:50:00')
 endtime         = pd.to_datetime('2022-09-06 12:59:00')
 
@@ -1759,7 +1755,7 @@ coord_extent = [4.51832, 4.52830, 51.91921, 51.92288]
 release_loc1 = (4.5237450, 51.9201216)
 release_loc2 = (4.5224917, 51.9203931) #51.9203931,4.5224917
 release_loc3 = (4.523775, 51.921028) # estimated from Daans plot (using google earth)
-column_names_mUU = {'G4302': 'CH4_ele_G43','G2301': 'CH4_ele_G23', 'Aeris':'CH4_ele_aeris'}
+column_names_mUU  = {'G4302': 'CH4_ele_G43', 'G2301': 'CH4_ele_G23', 'Aeris':'CH4_ele_aeris'}
 column_names_mTNO = {'Miro': 'CH4_ele_miro', 'Aerodyne': 'CH4_ele_aero'}
 column_names_aTNO = {'Miro': 'CH4_ele_miro', 'Aerodyne': 'CH4_ele_aero', 'G4302': 'CH4_ele_G43', 'Aeris':'CH4_ele_aeris'}
 # indiv_peak_plots = True  # or False based on your requirement

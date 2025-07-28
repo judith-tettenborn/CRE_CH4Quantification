@@ -40,12 +40,14 @@ import sys
 
 # path_base = Path('C:/Users/.../CRE_CH4Quantification/') # insert the the project path here
 
-save_to_csv = True
-indiv_peak_plots = True # plot individual peaks for QC? ATTENTION: when True this will create several hundreds of figures PER CRE
+save_to_csv = False
+indiv_peak_plots = False # plot individual peaks for QC? ATTENTION: when True this will create several hundreds of figures PER CRE
 
 
 ################################################################################################
 
+
+path_base = Path('C:/Users/Judit/Documents/UNI/Utrecht/Hiwi/CRE_CH4Quantification/')
 sys.path.append(str(path_base / 'src'))
 
 # In Python, the "Python path" refers to the list of directories where Python looks for modules
@@ -83,8 +85,6 @@ from helper_functions.dataset_dicts import (
     L1_vars_d2_G23,
     L1_vars_d3_Licor,
     L1_vars_d3_G23,
-    L1_vars_d4_Licor,
-    L1_vars_d4_G23,
     L1_vars_d5_G23,
     L2_vars_d1_Licor,
     L2_vars_d2_Licor
@@ -118,7 +118,6 @@ corrected_peaks_R_mTNO  = pd.read_excel(path_procdata / "R_CH4peaks_morningTNO_Q
 corrected_peaks_R_aTNO  = pd.read_excel(path_procdata / "R_CH4peaks_afternoon_QC.xlsx",sheet_name='miro',index_col='Datetime')
 corrected_peaks_L1d2    = pd.read_excel(path_procdata / "L1_CH4peaks_day2_QC.xlsx",sheet_name='LGR',index_col='Datetime')
 corrected_peaks_L1d3    = pd.read_excel(path_procdata / "L1_CH4peaks_day3_QC.xlsx",sheet_name='G2301',index_col='Datetime')
-corrected_peaks_L1d4    = pd.read_excel(path_procdata / "L1_CH4peaks_day4_QC.xlsx",sheet_name='G2301',index_col='Datetime')
 corrected_peaks_L1d5    = pd.read_excel(path_procdata / "L1_CH4peaks_day5_QC.xlsx",sheet_name='G2301',index_col='Datetime')
 corrected_peaks_L2d1    = pd.read_excel(path_procdata / "L2_CH4peaks_day1_QC.xlsx",sheet_name='Licor',index_col='Datetime')
 corrected_peaks_L2d2    = pd.read_excel(path_procdata / "L2_CH4peaks_day2_QC.xlsx",sheet_name='Licor',index_col='Datetime')
@@ -128,28 +127,26 @@ corrected_peaks_T2c     = pd.read_excel(path_procdata / "T_CH4peaks_2c_QC.xlsx",
 
 # Drop columns which are not necessary for the analysis
 # 'Sure?' and 'corrected' contain comments on the quality check (e.g. why a peak was regarded, if a peak was kept, but there is uncertainty about its validity)
-corrected_peaks_U1      = corrected_peaks_U1.drop(columns={'Peakstart','Peakend','corrected','Sure?','Overlap?','Car_passed? (Both)','Car_passed? (G4)'})
-corrected_peaks_U2      = corrected_peaks_U2.drop(columns={'Peakstart','Peakend','corrected','Sure?'})
-corrected_peaks_R_mUU   = corrected_peaks_R_mUU.drop(columns={'Peakstart','Peakend','corrected','Peak_old', 'Sure?'})
-corrected_peaks_R_aTNO  = corrected_peaks_R_aTNO.drop(columns={'Peakstart','Peakend','Peakend_peakfinder','corrected','Sure?','Distance','CH4_ele_miro_TNO'})
+corrected_peaks_U1      = corrected_peaks_U1.drop(columns={'Peakstart','Peakend','corrected'})
+corrected_peaks_U2      = corrected_peaks_U2.drop(columns={'Peakstart','Peakend','corrected'})
+corrected_peaks_R_mUU   = corrected_peaks_R_mUU.drop(columns={'Peakstart','Peakend','corrected'})
+corrected_peaks_R_aTNO  = corrected_peaks_R_aTNO.drop(columns={'Peakstart','Peakend','Peakend_peakfinder','corrected','Distance','CH4_ele_miro_TNO'})
 corrected_peaks_R_mTNO  = corrected_peaks_R_mTNO.drop(columns={'Peakstart','Peakend','corrected','Distance','CH4_ele_miro_TNO'})
-corrected_peaks_L1d2    = corrected_peaks_L1d2.drop(columns={'Peakstart','Peakend','Peakend_peakfinder','corrected','Sure?','CH4_bg05','CH4_bg10'})
-corrected_peaks_L1d3    = corrected_peaks_L1d3.drop(columns={'Peakstart','Peakend','corrected','Sure?'})
-corrected_peaks_L1d4    = corrected_peaks_L1d4.drop(columns={'Peakstart','Peakend','corrected','Sure?'})
-corrected_peaks_L1d5    = corrected_peaks_L1d5.drop(columns={'Peakstart','Peakend','Peakend_peakfinder','corrected','Sure?','CH4_bg05','CH4_bg10','Run','species','Distance'})
-corrected_peaks_L2d1    = corrected_peaks_L2d1.drop(columns={'Peakstart','Peakend','corrected','Sure?'})
-corrected_peaks_L2d2    = corrected_peaks_L2d2.drop(columns={'Peakstart','Peakend','corrected','Sure?'})
-corrected_peaks_T1b     = corrected_peaks_T1b.drop(columns={'Peakstart','Peakend','corrected','Sure?'})
-corrected_peaks_T1c     = corrected_peaks_T1c.drop(columns={'Peakstart','Peakend','corrected','Sure?'})
-corrected_peaks_T2c     = corrected_peaks_T2c.drop(columns={'Peakstart','Peakend','corrected','Sure?'})
+corrected_peaks_L1d2    = corrected_peaks_L1d2.drop(columns={'Peakstart','Peakend','Peakend_peakfinder','corrected','CH4_bg05','CH4_bg10'})
+corrected_peaks_L1d3    = corrected_peaks_L1d3.drop(columns={'Peakstart','Peakend','corrected'})
+corrected_peaks_L1d5    = corrected_peaks_L1d5.drop(columns={'Peakstart','Peakend','Peakend_peakfinder','corrected','CH4_bg05','CH4_bg10','Run','species','Distance'})
+corrected_peaks_L2d1    = corrected_peaks_L2d1.drop(columns={'Peakstart','Peakend','corrected'})
+corrected_peaks_L2d2    = corrected_peaks_L2d2.drop(columns={'Peakstart','Peakend','corrected'})
+corrected_peaks_T1b     = corrected_peaks_T1b.drop(columns={'Peakstart','Peakend','corrected'})
+corrected_peaks_T1c     = corrected_peaks_T1c.drop(columns={'Peakstart','Peakend','corrected'})
+corrected_peaks_T2c     = corrected_peaks_T2c.drop(columns={'Peakstart','Peakend','corrected'})
 
 
 
 
 #%% Treat Data: Analyse Peaks (Calculate Area)
 
-from peak_analysis.find_analyze_peaks import *
-# 
+
 # analyse_peak is a function in module find_analyze_peaks
 # based on the validity of the peaks it  
 # 1. assigns 0 or 1 in column QC (0- not valid, 1- valid)
@@ -165,7 +162,6 @@ analyse_peak_U2(corrected_peaks_U2,U2_vars_G23,U2_vars_aeris)
 
 analyse_peak(corrected_peaks_L1d2,L1_vars_d2_LGR, L1_vars_d2_G23)
 analyse_peak(corrected_peaks_L1d3,L1_vars_d3_Licor, L1_vars_d3_G23)
-analyse_peak(corrected_peaks_L1d4,L1_vars_d4_Licor, L1_vars_d4_G23)
 analyse_peak(corrected_peaks_L1d5,L1_vars_d5_G23)
 
 analyse_peak(corrected_peaks_L2d1,L2_vars_d1_Licor)
@@ -185,7 +181,6 @@ apply_log_transform(corrected_peaks_U1,     [U1_vars_G43, U1_vars_G23])
 apply_log_transform(corrected_peaks_U2,     [U2_vars_G23, U2_vars_aeris])
 apply_log_transform(corrected_peaks_L1d2,   [L1_vars_d2_LGR, L1_vars_d2_G23])
 apply_log_transform(corrected_peaks_L1d3,   [L1_vars_d3_Licor, L1_vars_d3_G23])
-apply_log_transform(corrected_peaks_L1d4,   [L1_vars_d4_Licor, L1_vars_d4_G23])
 apply_log_transform(corrected_peaks_L1d5,   [L1_vars_d5_G23])
 apply_log_transform(corrected_peaks_L2d1,   [L2_vars_d1_Licor])
 apply_log_transform(corrected_peaks_L2d2,   [L2_vars_d2_Licor])
@@ -202,7 +197,6 @@ corrected_peaks_U1['City']      = 'Utrecht I'
 corrected_peaks_U2['City']      = 'Utrecht II'
 corrected_peaks_L1d2['City']    = 'London I-Day2'
 corrected_peaks_L1d3['City']    = 'London I-Day3'
-corrected_peaks_L1d4['City']    = 'London I-Day4'
 corrected_peaks_L1d5['City']    = 'London I-Day5'
 corrected_peaks_T1b['City']     = 'Toronto-1b'
 corrected_peaks_T1c['City']     = 'Toronto-1c'
@@ -214,7 +208,6 @@ corrected_peaks_L2d2['City']    = 'London II-Day2'
 # column to those that do not have it yet for consistency
 corrected_peaks_L1d2['Loc']     = 1
 corrected_peaks_L1d3['Loc']     = 1
-corrected_peaks_L1d4['Loc']     = 1
 corrected_peaks_L1d5['Loc']     = 1
 corrected_peaks_T1b['Loc']      = 1
 corrected_peaks_T1c['Loc']      = 1
@@ -237,12 +230,10 @@ def fct_save_to_csv(df, city, name, path, save_to_csv, Day=None):
 # London I
 corrected_peaks_L1d2 = corrected_peaks_L1d2[corrected_peaks_L1d2['Release_height'] == 0] # since we are only investigating ground releases, delete peaks from releases from higher altitudes
 corrected_peaks_L1d3 = corrected_peaks_L1d3[corrected_peaks_L1d3['Release_height'] == 0]
-corrected_peaks_L1d4 = corrected_peaks_L1d4[corrected_peaks_L1d4['Release_height'] == 0]
 corrected_peaks_L1d5 = corrected_peaks_L1d5[corrected_peaks_L1d5['Release_height'] == 0]
 
 total_peaks_L1d2 = fct_save_to_csv(corrected_peaks_L1d2,'London I',"L1_TOTAL_PEAKS_Day2", path_finaldata,save_to_csv)
 total_peaks_L1d3 = fct_save_to_csv(corrected_peaks_L1d3,'London I',"L1_TOTAL_PEAKS_Day3", path_finaldata,save_to_csv)
-total_peaks_L1d4 = fct_save_to_csv(corrected_peaks_L1d4,'London I',"L1_TOTAL_PEAKS_Day4", path_finaldata,save_to_csv)
 total_peaks_L1d5 = fct_save_to_csv(corrected_peaks_L1d5,'London I',"L1_TOTAL_PEAKS_Day5", path_finaldata,save_to_csv)
 
 # London II
@@ -272,12 +263,12 @@ total_peaks_R['Loc'] = total_peaks_R['Loc'].replace({10: 1, 20: 2})
 total_peaks_R = fct_save_to_csv(total_peaks_R,'Rotterdam',"R_TOTAL_PEAKS", path_finaldata,save_to_csv)
 
   
-# RU2T2L4L2 ------
+# RU2T2L3L2 ------
 
-total_peaks_all     = pd.concat((total_peaks_R, total_peaks_U1, total_peaks_U2, total_peaks_T1b, total_peaks_T1c, total_peaks_T2c, total_peaks_L1d2, total_peaks_L1d3, total_peaks_L1d4, total_peaks_L1d5, total_peaks_L2d1, total_peaks_L2d2))
+total_peaks_all     = pd.concat((total_peaks_R, total_peaks_U1, total_peaks_U2, total_peaks_T1b, total_peaks_T1c, total_peaks_T2c, total_peaks_L1d2, total_peaks_L1d3, total_peaks_L1d5, total_peaks_L2d1, total_peaks_L2d2))
 
 if save_to_csv:
-    total_peaks_all.to_csv(path_finaldata / 'RU2T2L4L2_TOTAL_PEAKS.csv')
+    total_peaks_all.to_csv(path_finaldata / 'RU2T2L3L2_TOTAL_PEAKS.csv')
 
     
 
@@ -421,8 +412,6 @@ passed_peaks = corrected_peaks_L1d2.loc[(corrected_peaks_L1d2['QC'] == True)]
 coord_extent_2 = [passed_peaks['Longitude'].min()-0.001,passed_peaks['Longitude'].max(), passed_peaks['Latitude'].min()-0.0005, passed_peaks['Latitude'].max()+0.0005] #r_loc: 43.782970N, (-)79.46952W 
 passed_peaks = corrected_peaks_L1d3.loc[(corrected_peaks_L1d3['QC'] == True)]
 coord_extent_3 = [passed_peaks['Longitude'].min()-0.001,passed_peaks['Longitude'].max(), passed_peaks['Latitude'].min()-0.0005, passed_peaks['Latitude'].max()+0.0005] #r_loc: 43.782970N, (-)79.46952W 
-passed_peaks = corrected_peaks_L1d4.loc[(corrected_peaks_L1d4['QC'] == True)]
-coord_extent_4 = [passed_peaks['Longitude'].min()-0.001,passed_peaks['Longitude'].max(), passed_peaks['Latitude'].min()-0.0005, passed_peaks['Latitude'].max()+0.0005] #r_loc: 43.782970N, (-)79.46952W 
 passed_peaks = corrected_peaks_L1d5.loc[(corrected_peaks_L1d5['QC'] == True)]
 coord_extent_5 = [passed_peaks['Longitude'].min()-0.003,passed_peaks['Longitude'].max()+0.003, passed_peaks['Latitude'].min()-0.003, passed_peaks['Latitude'].max()+0.003] #r_loc: 43.782970N, (-)79.46952W 
 column_names_2 = {'LGR': 'CH4_ele_LGR', 'G2301': 'CH4_ele_G23'}
@@ -449,16 +438,6 @@ path_save =  path_fig / 'London_I_2019' / 'L1_Peakplots_QCpassed' / 'Day3'
 
 # Call the plot function to plot individual peaks
 plot_indivpeaks_afterQC(corrected_peaks_L1d3, path_save, coord_extent_3, release_loc_L, release_loc2==None, indiv_peak_plots, column_names_3, L1_vars_d3_Licor, L1_vars_d3_G23)
-
-
-''' --- Day 4 --- '''
-
-if not (path_fig / 'London_I_2019' / 'L1_Peakplots_QCpassed' / 'Day4').is_dir():
-    (path_fig / 'London_I_2019' / 'L1_Peakplots_QCpassed' / 'Day4').mkdir(parents=True)
-path_save =  path_fig / 'London_I_2019' / 'L1_Peakplots_QCpassed' / 'Day4'
-
-# Call the plot function to plot individual peaks
-plot_indivpeaks_afterQC(corrected_peaks_L1d4, path_save, coord_extent_4, release_loc_L, release_loc2==None, indiv_peak_plots, column_names_3, L1_vars_d4_Licor, L1_vars_d4_G23)
 
 
 
@@ -533,14 +512,12 @@ df_U1   = total_peaks_U1[['Loc','Release_rate','Area_mean_G23','Area_mean_G43','
 df_U2   = total_peaks_U2[['Loc','Release_rate','Area_mean_G23','Area_mean_aeris','Max_G23','Max_aeris','Latitude','Longitude','Mean_speed']].copy(deep=True)
 df_L1d2 = total_peaks_L1d2[['Release_rate','Area_mean_LGR','Area_mean_G23','Max_LGR','Max_G23','Peak','Latitude','Longitude','Mean_speed']].copy(deep=True)
 df_L1d3 = total_peaks_L1d3[['Release_rate','Area_mean_Licor','Area_mean_G23','Max_Licor','Max_G23','Peak','Latitude','Longitude','Mean_speed']].copy(deep=True)
-df_L1d4 = total_peaks_L1d4[['Release_rate','Area_mean_Licor','Area_mean_G23','Max_Licor','Max_G23','Peak','Latitude','Longitude','Mean_speed']].copy(deep=True)
 df_L1d5 = total_peaks_L1d5[['Release_rate','Area_mean_G23','Max_G23','Peak','Latitude','Longitude','Mean_speed']].copy(deep=True)
 df_T1b  = total_peaks_T1b[['Release_rate','Area_mean_LGR','Max_LGR','Peak','Latitude','Longitude','Mean_speed']].copy(deep=True)
 df_T1c  = total_peaks_T1c[['Release_rate','Area_mean_G24','Max_G24','Peak','Latitude','Longitude','Mean_speed']].copy(deep=True)
 df_T2c  = total_peaks_T2c[['Release_rate','Area_mean_G24','Max_G24','Peak','Latitude','Longitude','Mean_speed']].copy(deep=True)
 df_L2d1 = total_peaks_L2d1[['Release_rate','Area_mean_Licor','Max_Licor','Peak','Latitude','Longitude','Mean_speed']].copy(deep=True)
 df_L2d2 = total_peaks_L2d2[['Release_rate','Area_mean_Licor','Max_Licor','Peak','Latitude','Longitude','Mean_speed']].copy(deep=True)
-
 
 df_T1b_comb = df_T1b.rename(columns={'Area_mean_LGR':'Area','Max_LGR':'Max'})
 df_T1c_comb = df_T1c.rename(columns={'Area_mean_G24':'Area','Max_G24':'Max'})
@@ -710,21 +687,7 @@ max_columns.drop(['Release_rate'],axis=1,inplace=True)
 df_L1d3_comb = pd.concat([df_L1d3_comb, max_columns], axis=1)
 df_L1d3_comb.drop(['Instruments_area'],axis=1,inplace=True)
 
-# Day4 ---
-df_L1d4_comb = df_L1d4.copy(deep=True)
-max_columns = df_L1d4_comb.filter(like='Max').copy(deep=True)
-df_L1d4_comb.drop(list(max_columns.columns),axis=1,inplace=True) #must be directly after the filter line, sicne later additional columns are added which should not be droped from df_R
-max_columns['Release_rate'] = df_L1d4_comb['Release_rate']
-df_L1d4_comb.reset_index(inplace=True,drop=False)
-df_L1d4_comb = pd.melt(df_L1d4_comb, id_vars=['Release_rate','Peak','Latitude','Longitude','Mean_speed','Datetime'],
-                    value_vars=['Area_mean_G23', 'Area_mean_Licor'], 
-                    var_name='Instruments_area', value_name='Area')
-max_columns = pd.melt(max_columns, id_vars=['Release_rate'], value_vars=['Max_G23', 'Max_Licor'], 
-                      var_name='Instruments_max', value_name='Max')
-max_columns.drop(['Release_rate'],axis=1,inplace=True)
-df_L1d4_comb = pd.concat([df_L1d4_comb, max_columns], axis=1)
-df_L1d4_comb.drop(['Instruments_area'],axis=1,inplace=True)
-
+# Day5 ---
 df_L1d5_comb = df_L1d5.copy(deep=True)
 df_L1d5_comb['Instruments_max'] = ['Max_G23'] * len(df_L1d5_comb)
 df_L1d5_comb = df_L1d5_comb.rename(columns={'Area_mean_G23':'Area','Max_G23':'Max'})
@@ -736,16 +699,12 @@ df_L1d2_comb['ln(Max)'] = np.log(df_L1d2_comb['Max'])
 df_L1d3_comb['ln(Area)'] = np.log(df_L1d3_comb['Area'])
 df_L1d3_comb['ln(Max)'] = np.log(df_L1d3_comb['Max'])
 
-df_L1d4_comb['ln(Area)'] = np.log(df_L1d4_comb['Area'])
-df_L1d4_comb['ln(Max)'] = np.log(df_L1d4_comb['Max'])
-
 df_L1d5_comb['ln(Area)'] = np.log(df_L1d5_comb['Area'])
 df_L1d5_comb['ln(Max)'] = np.log(df_L1d5_comb['Max'])
 
 
 df_L1d2_rr_count = df_L1d2_comb.groupby(['Release_rate']).size().reset_index(name='count')
 df_L1d3_rr_count = df_L1d3_comb.groupby(['Release_rate']).size().reset_index(name='count')
-df_L1d4_rr_count = df_L1d4_comb.groupby(['Release_rate']).size().reset_index(name='count')
 df_L1d5_rr_count = df_L1d5_comb.groupby(['Release_rate']).size().reset_index(name='count')
 
 # London II ------------------
@@ -787,7 +746,6 @@ add_distance_to_df(df_U1_comb,'Utrecht I')
 add_distance_to_df(df_U2_comb,'Utrecht II')
 add_distance_to_df(df_L1d2_comb,'London I')
 add_distance_to_df(df_L1d3_comb,'London I')
-add_distance_to_df(df_L1d4_comb,'London I')
 add_distance_to_df(df_L1d5_comb,'London I')
 add_distance_to_df(df_T1b_comb,'Toronto',Day=1)
 add_distance_to_df(df_T1c_comb,'Toronto',Day=1)
@@ -801,7 +759,6 @@ df_U1_comb['City']   = 'Utrecht I'
 df_U2_comb['City']   = 'Utrecht II'
 df_L1d2_comb['City'] = 'London I-Day2'
 df_L1d3_comb['City'] = 'London I-Day3'
-df_L1d4_comb['City'] = 'London I-Day4'
 df_L1d5_comb['City'] = 'London I-Day5'
 df_T1b_comb['City']  = 'Toronto-1b'
 df_T1c_comb['City']  = 'Toronto-1c'
@@ -811,7 +768,6 @@ df_L2d2_comb['City'] = 'London II-Day2'
 
 df_L1d2_comb['Loc']  = 1
 df_L1d3_comb['Loc']  = 1
-df_L1d4_comb['Loc']  = 1
 df_L1d5_comb['Loc']  = 1
 df_T1b_comb['Loc']   = 1
 df_T1c_comb['Loc']   = 1
@@ -822,7 +778,7 @@ df_L2d2_comb['Loc']  = 1
 
 # Merge all cities into one df------------------
 # reset index now and restore it later to avoid index related issues during pd.concat
-df_RU2T2L4L2 = pd.concat(
+df_RU2T2L3L2 = pd.concat(
     [
         df_R_comb.copy().reset_index(drop=False),
         df_U1_comb.copy().reset_index(drop=False),
@@ -832,7 +788,6 @@ df_RU2T2L4L2 = pd.concat(
         df_T2c_comb.copy().reset_index(drop=False),
         df_L1d2_comb.copy().reset_index(drop=False),
         df_L1d3_comb.copy().reset_index(drop=False),
-        df_L1d4_comb.copy().reset_index(drop=False),
         df_L1d5_comb.copy().reset_index(drop=False),
         df_L2d1_comb.copy().reset_index(drop=False),
         df_L2d2_comb.copy().reset_index(drop=False),
@@ -841,16 +796,16 @@ df_RU2T2L4L2 = pd.concat(
     ignore_index=True,
     sort=False
 )
-df_RU2T2L4L2 = df_RU2T2L4L2.set_index(df_RU2T2L4L2.columns[0], drop=True) # set Datetime column as index
-df_RU2T2L4L2_rr_count = df_RU2T2L4L2.groupby(['Release_rate']).size().reset_index(name='count')
+df_RU2T2L3L2 = df_RU2T2L3L2.set_index(df_RU2T2L3L2.columns[0], drop=True) # set Datetime column as index
+df_RU2T2L3L2_rr_count = df_RU2T2L3L2.groupby(['Release_rate']).size().reset_index(name='count')
 
 
 
 # save_to_csv=True
 if save_to_csv:
     # Save the DataFrame as a CSV file
-    df_RU2T2L4L2.to_csv(path_finaldata  / 'RU2T2L4L2_TOTAL_PEAKS_comb.csv')
-    df_RU2T2L4L2_rr_count.to_csv(path_finaldata / 'RU2T2L4L2_count.csv')
+    df_RU2T2L3L2.to_csv(path_finaldata  / 'RU2T2L3L2_TOTAL_PEAKS_comb.csv')
+    df_RU2T2L3L2_rr_count.to_csv(path_finaldata / 'RU2T2L3L2_count.csv')
     # release height =4 in London NOT included
     
     df_R_comb.to_csv(path_finaldata     / 'R_comb_final.csv')
@@ -858,7 +813,6 @@ if save_to_csv:
     df_U2_comb.to_csv(path_finaldata    / 'U2_comb_final.csv')
     df_L1d2_comb.to_csv(path_finaldata  / 'L1d2_comb_final.csv')
     df_L1d3_comb.to_csv(path_finaldata  / 'L1d3_comb_final.csv')
-    df_L1d4_comb.to_csv(path_finaldata  / 'L1d4_comb_final.csv')
     df_L1d5_comb.to_csv(path_finaldata  / 'L1d5_comb_final.csv')
     df_T1b_comb.to_csv(path_finaldata   / 'T1b_comb_final.csv')
     df_T1c_comb.to_csv(path_finaldata   / 'T1c_comb_final.csv')
@@ -871,7 +825,6 @@ if save_to_csv:
     df_U2_rr_count.to_csv(path_finaldata    / 'U2_comb_count.csv')
     df_L1d2_rr_count.to_csv(path_finaldata  / 'L1d2_comb_count.csv')
     df_L1d3_rr_count.to_csv(path_finaldata  / 'L1d3_comb_count.csv')
-    df_L1d4_rr_count.to_csv(path_finaldata  / 'L1d4_comb_count.csv')
     df_L1d5_rr_count.to_csv(path_finaldata  / 'L1d5_comb_count.csv')
     df_T1b_rr_count.to_csv(path_finaldata   / 'T1b_comb_count.csv')
     df_T1c_rr_count.to_csv(path_finaldata   / 'T1c_comb_count.csv')
