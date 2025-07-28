@@ -40,15 +40,12 @@ def read_gps_U1(path_data):
         'Latitude', 'Longitude', 'Speed [m/s]' and a datetime index.
     """
     
-    #   Read GPS data (txt file)
-    df_GPS1 = pd.read_csv(path_data / 'GPS/20221125-140618.txt', delimiter=',')  # Use appropriate delimiter if not tab-separated
-    df_GPS2 = pd.read_csv(path_data / 'GPS/20221125-153309.txt', delimiter=',')  # Use appropriate delimiter if not tab-separated
-    
-    gps1 = pd.read_csv(path_data / 'GPS/20221125-140618.txt',
+    #   Read GPS data (txt file)   
+    gps1 = pd.read_csv(path_data / 'GPS/20221125-140618_GPS.txt',
                                 delimiter = ",",
                                 #names=['Datetime', 'Latitude', 'Longitude', 'speed [m/s]'],
                                 usecols = [1,2,3,7])
-    gps2 = pd.read_csv(path_data / 'GPS/20221125-153309.txt',
+    gps2 = pd.read_csv(path_data / 'GPS/20221125-153309_GPS.txt',
                                 delimiter = ",",
                                 #names=['Datetime', 'Latitude', 'Longitude', 'speed [m/s]'],
                                 usecols = [1,2,3,7])
@@ -70,8 +67,8 @@ def read_gps_U1(path_data):
 
 
 def read_G23andG43_U1(path_data):
-    dfs_G23 = dat_to_df_dict(path_data / '25112022-G2301/')
-    dfs_G43 = dat_to_df_dict(path_data / '25112022-G4302/')
+    dfs_G23 = dat_to_df_dict(path_data / 'G2301_Picarro/')
+    dfs_G43 = dat_to_df_dict(path_data / 'G4302_Picarro/')
     
     # Merge all dataframes in the dictionary into a single dataframe
     df_G23 = pd.concat(dfs_G23.values(), ignore_index=True)
@@ -215,7 +212,7 @@ def read_and_preprocess_U2(path_data, path_res,bg_quantile=None,writexlsx=False)
     # =============================================================================
     
     
-    dfs_G2 = dat_to_df_dict(path_data / 'Methane_Data/G2301_Picarro/')
+    dfs_G2 = dat_to_df_dict(path_data / 'G2301_Picarro/')
     
     # Merge all dataframes in the dictionary into a single dataframe
     df_G2 = pd.concat(dfs_G2.values(), ignore_index=True)
@@ -248,7 +245,7 @@ def read_and_preprocess_U2(path_data, path_res,bg_quantile=None,writexlsx=False)
     #   Aeris Mira Ultra 
     # =============================================================================
     
-    dfs_aeris = txt_to_df_dict(path_data / 'Methane_Data/Mira-Ultra_Aeris/')
+    dfs_aeris = txt_to_df_dict(path_data / 'MiraUltra_Aeris/')
     
     # Merge all dataframes in the dictionary into a single dataframe
     df_aeris = pd.concat(dfs_aeris.values(), ignore_index=True)
@@ -359,7 +356,7 @@ def read_and_preprocess_U2_no_shift(path_data, path_res,bg_quantile=None,writexl
     # =============================================================================
     
     
-    dfs_G2 = dat_to_df_dict(path_data / 'Methane_Data/G2301_Picarro/')
+    dfs_G2 = dat_to_df_dict(path_data / 'G2301_Picarro/')
     
     # Merge all dataframes in the dictionary into a single dataframe
     df_G2 = pd.concat(dfs_G2.values(), ignore_index=True)
@@ -392,7 +389,7 @@ def read_and_preprocess_U2_no_shift(path_data, path_res,bg_quantile=None,writexl
     #   Aeris Mira Ultra 
     # =============================================================================
     
-    dfs_aeris = txt_to_df_dict(path_data / 'Methane_Data/Mira-Ultra_Aeris/')
+    dfs_aeris = txt_to_df_dict(path_data / 'MiraUltra_Aeris/')
     
     # Merge all dataframes in the dictionary into a single dataframe
     df_aeris = pd.concat(dfs_aeris.values(), ignore_index=True)
@@ -514,9 +511,9 @@ def calc_gps_T(df):
 
 def read_and_preprocess_BikeandCar_T(path_dataT, path_res, writexlsx=False):
     
-    T_1bike = pd.read_csv(path_dataT / 'sync_data_bike_2021-10-20.csv', index_col='gps_time', parse_dates=['gps_time'])
-    T_1c = pd.read_csv(path_dataT / 'sync_data_eccc_car_2021-10-20.csv', index_col='gps_time', parse_dates=['gps_time'])
-    T_2c = pd.read_csv(path_dataT / 'sync_data_eccc_car_2021-10-24.csv', index_col='gps_time', parse_dates=['gps_time'])
+    T_1bike = pd.read_csv(path_dataT / '20211020_bike_UGGA_measurements1.csv', index_col='gps_time', parse_dates=['gps_time'])
+    T_1c    = pd.read_csv(path_dataT / '20211020_car_G2401_measurements1.csv', index_col='gps_time', parse_dates=['gps_time'])
+    T_2c    = pd.read_csv(path_dataT / '20211024_car_G2401_measurements1.csv', index_col='gps_time', parse_dates=['gps_time'])
 
     
     # =============================================================================
@@ -524,11 +521,11 @@ def read_and_preprocess_BikeandCar_T(path_dataT, path_res, writexlsx=False):
     # =============================================================================
     
     # Release Time
-    r1_start = datetime(2021,10,20,20,13)
-    r4_finish = datetime(2021,10,20,20,49)
+    r1_start    = datetime(2021,10,20,20,13)
+    r4_finish   = datetime(2021,10,20,20,49)
     
-    starttime = r1_start - timedelta(minutes=3)
-    endtime = r4_finish + timedelta(minutes=3)
+    starttime   = r1_start - timedelta(minutes=3)
+    endtime     = r4_finish + timedelta(minutes=3)
     
     T_1bike.index.names = ['Datetime']
     T_1bike.rename(columns={'ch4': 'CH4_LGR','lat': 'Latitude', 'lon':'Longitude', 'heading':'Heading'}, inplace=True)
@@ -571,13 +568,13 @@ def read_and_preprocess_BikeandCar_T(path_dataT, path_res, writexlsx=False):
     #       20.10.21 - Car
     # =============================================================================
     
-    r1_start = datetime(2021,10,20,20,11)
-    r4_finish = datetime(2021,10,20,20,49)
+    r1_start    = datetime(2021,10,20,20,11)
+    r4_finish   = datetime(2021,10,20,20,49)
 
-    starttime = r1_start - timedelta(minutes=3)
-    endtime = r4_finish + timedelta(minutes=3)
+    starttime   = r1_start - timedelta(minutes=3)
+    endtime     = r4_finish + timedelta(minutes=3)
 
-    G2401_1c = T_1c[starttime:endtime].copy(deep=True)
+    G2401_1c    = T_1c[starttime:endtime].copy(deep=True)
 
     G2401_1c.index.names = ['Datetime']
     G2401_1c.rename(columns={'ch4': 'CH4_G24','lat': 'Latitude', 'lon':'Longitude', 'heading':'Heading'}, inplace=True)
@@ -591,24 +588,15 @@ def read_and_preprocess_BikeandCar_T(path_dataT, path_res, writexlsx=False):
 
     # --- GPS ----------------------------
     
-    gps = calc_gps_T(G2401_1c) # in postprocessing.U_readin_data 
+    gps = calc_gps_T(G2401_1c)
         
     # --- Time correction (inlet delay) ----------------------------
     
     G2401_1c = G2401_1c.drop(['Latitude', 'Longitude'], axis=1)
-    # G2301_1c.index = (G2301_1c.index
-    #                   - timedelta(seconds=30)) # account for inlet delay
-    # # merge gps with time shifted data (since gps is not affected by inlet no shift needed
-    # # but since Datetime index was shifted, merging is needed. Interpolation is
-    # # necessary since the index was not shifted by number of observations (e.g. 30 obs.),
-    # # but by a time (30s) which can lead to the case that there is no datetime index
-    # # anymore which fits to the index of the gps)
-    # G2301_1c = merge_interpolate_left(G2301_1c, gps, col='Datetime')
 
     G2401_1c = pd.concat([G2401_1c, gps],axis=1, ignore_index=False)
     G2401_1c.index = pd.to_datetime(G2401_1c.index)
     
-    #G2401_1c = merge_with_gps(G2401_1c, gps)  # ???
 
     # --- Calculate CH4 elevation -------------------------------
     
@@ -626,13 +614,13 @@ def read_and_preprocess_BikeandCar_T(path_dataT, path_res, writexlsx=False):
     # =============================================================================
 
     # Release Time
-    r1_start = datetime(2021,10,24,13,47)
-    r4_finish = datetime(2021,10,24,15,00)
+    r1_start    = datetime(2021,10,24,13,47)
+    r4_finish   = datetime(2021,10,24,15,00)
 
-    starttime = r1_start - timedelta(minutes=3)
-    endtime = r4_finish + timedelta(minutes=3)
+    starttime   = r1_start - timedelta(minutes=3)
+    endtime     = r4_finish + timedelta(minutes=3)
 
-    G2401_2c = T_2c[starttime:endtime].copy(deep=True)
+    G2401_2c    = T_2c[starttime:endtime].copy(deep=True)
 
     G2401_2c.index.names = ['Datetime']
     G2401_2c.rename(columns={'ch4': 'CH4_G24','lat': 'Latitude', 'lon':'Longitude', 'heading':'Heading'}, inplace=True)
@@ -645,8 +633,7 @@ def read_and_preprocess_BikeandCar_T(path_dataT, path_res, writexlsx=False):
 
     # --- GPS ----------------------------
     
-    gps = calc_gps_T(G2401_2c) # in postprocessing.U_readin_data 
-    print(gps)
+    gps = calc_gps_T(G2401_2c)
     
     # --- Time correction (inlet delay) ----------------------------
     
@@ -935,10 +922,11 @@ def read_and_preprocess_L2(path_data, path_res, writexlsx=False):
     #       Day 1
     # =============================================================================
     
-    L2_Licor_d1 = pd.read_excel(path_data / 'LiCOR_groundreleasesonly.xlsx', sheet_name='LiCOR_Mon_ground only')
+    L2_Licor_d1 = pd.read_csv(path_data / '20240513_Licor_measurements1.csv',
+                              delimiter=';')
     
     # Combine date and time into datetime
-    L2_Licor_d1['Datetime'] = pd.to_datetime(L2_Licor_d1['DATE']) + pd.to_timedelta(L2_Licor_d1['Time_Licor_corrected'].astype(str))
+    L2_Licor_d1['Datetime'] = pd.to_datetime(L2_Licor_d1['DATE'], dayfirst=True) + pd.to_timedelta(L2_Licor_d1['Time_Licor_corrected'].astype(str))
     L2_Licor_d1.set_index('Datetime',inplace = True,drop=True)
 
     # Drop unnecessary columns and rows with Nans
@@ -966,14 +954,16 @@ def read_and_preprocess_L2(path_data, path_res, writexlsx=False):
     #       Day 2
     # =============================================================================
     
-    L2_Licor_d2 = pd.read_excel(path_data / 'LiCOR_groundreleasesonly.xlsx', sheet_name='LiCOR Tuesday ground only')
+    L2_Licor_d2 = pd.read_csv(path_data / '20240514_Licor_measurements1.csv',
+                              delimiter=';')
 
     starttime       = pd.to_datetime('2024-05-14 09:08:00')
     endtime         = pd.to_datetime('2024-05-14 11:24:00')
-
+    
     # Combine date and time into datetime
-    L2_Licor_d2['Datetime'] = pd.to_datetime(L2_Licor_d2['DATE']) + pd.to_timedelta(L2_Licor_d2['Time_Licor_corrected'].astype(str))
+    L2_Licor_d2['Datetime'] = pd.to_datetime(L2_Licor_d2['DATE'], dayfirst=True) + pd.to_timedelta(L2_Licor_d2['Time_Licor_corrected'].astype(str))
     L2_Licor_d2.set_index('Datetime',inplace = True,drop=True)
+    L2_Licor_d2 = L2_Licor_d2.loc[starttime:endtime]
 
     # Drop unnecessary columns and rows with Nans
     L2_Licor_d2 = L2_Licor_d2.loc[:,['CH4_licor/ppm','LAT_licor','LON_licor','Speed m/s','Direction / deg']]
@@ -990,7 +980,6 @@ def read_and_preprocess_L2(path_data, path_res, writexlsx=False):
 
     L2_Licor_d2.name = 'Licor'
     L2_Licor_d2 = delete_duplicate_indices(L2_Licor_d2,'Datetime')
-    L2_Licor_d2 = L2_Licor_d2.loc[starttime:endtime]
 
     # --- Save -------------------------------
 
@@ -1019,11 +1008,12 @@ def read_and_preprocess_R(path_data, path_res, bg=None, writexlsx=False):
     
     # All directory paths
 
-    path_G2301   = path_data / 'Car/G2301/'
-    path_G4302   = path_data / 'G4302/'
-    path_aeris   = path_data / 'Car/Aeris/'
-    path_gps     = path_data / 'Car/'
-    path_TNO     = path_data / 'TNO/'
+    path_G2301   = path_data / 'G2301_Picarro/'
+    path_G4302   = path_data / 'G4302_Picarro/'
+    path_aeris   = path_data / 'MiraUltra_Aeris/'
+    path_miro    = path_data / 'MGA10_Miro/'
+    path_aero    = path_data / 'TILDAS_Aerodyne/'
+    path_gps     = path_data / 'GPS_UUAQ/'
     
     
     
@@ -1099,7 +1089,7 @@ def read_and_preprocess_R(path_data, path_res, bg=None, writexlsx=False):
     # Aeris gets transfered in the afternoon from the UU car to the TNO car
     
     
-    aerfile = 'Pico100221_220906_072814.txt'
+    aerfile = '220906_072814_MiraUltra_measurements1.txt'
     aeris = pd.read_csv(path_aeris / aerfile, sep=',').add_prefix('aer_')
     aeris.rename(columns={'aer_Time Stamp':'Datetime', 'aer_CH4 (ppm)':'CH4_aeris'},inplace=True)
     aeris = aeris.set_index('Datetime', drop = True)
@@ -1127,9 +1117,10 @@ def read_and_preprocess_R(path_data, path_res, bg=None, writexlsx=False):
     # =============================================================================
     
     
-    gps = pd.read_excel(path_gps / '2022-09-06_GPS.xlsx',
-                            header = 0,
-                            names=['Datetime', 'Latitude', 'Longitude', 'speed']) #usecols = [0,1,2,3]
+    gps = pd.read_csv(path_gps / '20220906_GPS.csv',
+                      delimiter=';',
+                      header = 0,
+                      names=['Datetime', 'Latitude', 'Longitude', 'speed']) #usecols = [0,1,2,3]
 
     gps.Datetime = pd.to_datetime(gps.Datetime)
     gps.set_index('Datetime',inplace=True)
@@ -1150,7 +1141,7 @@ def read_and_preprocess_R(path_data, path_res, bg=None, writexlsx=False):
     #   Miro - TNO car
     # =============================================================================
     
-    miro = pd.read_csv(path_TNO / 'TNO_miro_06092022.csv', index_col=(0),sep=';',
+    miro = pd.read_csv(path_miro / '20220906_MGA10_measurements1.csv', index_col=(0),sep=';',
                        usecols=[0,8,19,20,21,22],dtype={'comment':'str','geometry':'str',})
     
     miro.index = pd.to_datetime(miro.index,dayfirst=True)
@@ -1178,7 +1169,7 @@ def read_and_preprocess_R(path_data, path_res, bg=None, writexlsx=False):
     # =============================================================================
     
 
-    aerodyne = pd.read_csv(path_TNO / 'TNO_aero_06092022.csv', sep = ';',index_col=0,
+    aerodyne = pd.read_csv(path_aero / '20220906_Tildas_measurements1.csv', sep = ';',index_col=0,
                            usecols=['datetime', '2_CH4','distance', 'speed',
                                     'comment', 'geometry','wsp_processed', 'wdir_processed'])
     
@@ -1237,19 +1228,11 @@ def read_and_preprocess_R(path_data, path_res, bg=None, writexlsx=False):
     
     # Print data into csv
     if writexlsx:
-        if (bg==0.1):
-            G4302_gps.to_csv(path_res / 'R_G4302.csv', index=True) # way faster than excel
-            G2301_gps.to_csv(path_res / 'R_G2301.csv', index=True)
-            aeris_gps.to_csv(path_res / 'R_aeris.csv', index=True)
-            miro.to_csv(path_res / 'R_miro.csv', index=True)
-            aerodyne.to_csv(path_res / 'R_aerodyne.csv', index=True) 
-        else:
-            a = str(bg).replace('.', '')
-            G4302_gps.to_csv(path_res / f'Test_bg/R_G4302_bg{a}.csv', index=True) # way faster than excel
-            G2301_gps.to_csv(path_res / f'Test_bg/R_G2301_bg{a}.csv', index=True)
-            aeris_gps.to_csv(path_res / f'Test_bg/R_aeris_bg{a}.csv', index=True)
-            miro.to_csv(path_res / f'Test_bg/R_miro_bg{a}.csv', index=True)
-            aerodyne.to_csv(path_res / f'Test_bg/R_aerodyne_bg{a}.csv', index=True) 
+        G4302_gps.to_csv(path_res / 'R_G4302.csv', index=True)
+        G2301_gps.to_csv(path_res / 'R_G2301.csv', index=True)
+        aeris_gps.to_csv(path_res / 'R_aeris.csv', index=True)
+        miro.to_csv(path_res / 'R_miro.csv', index=True)
+        aerodyne.to_csv(path_res / 'R_aerodyne.csv', index=True) 
         
     return G4302_gps, G2301_gps, aeris_gps, miro, aerodyne
     
