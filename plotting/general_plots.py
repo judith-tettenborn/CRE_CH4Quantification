@@ -419,17 +419,17 @@ def plot2_linreg_plotscatter(df_log_peaks,all_max_R,all_area_R,ax,legend_handles
             color = dict_color_city[spec_vars['city']]
             label = spec_vars['city']
             
-        if (spec_vars['city'] == 'London') and (spec_vars['day'] == 'Day2'):
+        if (spec_vars['city'] == 'London I') and (spec_vars['day'] == 'Day2'):
             label = spec_vars['city']+' Day1'
-        elif (spec_vars['city'] == 'London') and (spec_vars['day'] == 'Day5'):
+        elif (spec_vars['city'] == 'London I') and (spec_vars['day'] == 'Day5'):
             label = spec_vars['city']+' Day3'
             
         
         corrected_peaks = df_log_peaks[df_log_peaks[f'Max_{spec}_log'].notna()].copy(deep=True)
         corrected_peaks.drop(['Release_rate_str'],axis=1,inplace=True)
 
-        means           = corrected_peaks.groupby('Release_rate').mean(numeric_only=True)
-        medians         = corrected_peaks.groupby('Release_rate').median(numeric_only=True)
+        means           = corrected_peaks.groupby('Release_rate_log').mean(numeric_only=True)
+        medians         = corrected_peaks.groupby('Release_rate_log').median(numeric_only=True)
         
         ax1.scatter(corrected_peaks['Release_rate_log'],corrected_peaks[f'Max_{spec}_log'],marker=marker, s=size_marker,color=color) #,label=title
         ax1.grid()
@@ -591,16 +591,16 @@ def plot2_linreg_plotscatter_color(df_log_peaks,all_max_R,all_area_R,ax,legend_h
 
 
 
-def mean_and_median(all_area,all_max):
-    all_area = pd.concat(all_area)
-    all_max = pd.concat(all_max)
+# def mean_and_median(all_area,all_max):
+#     all_area = pd.concat(all_area)
+#     all_max = pd.concat(all_max)
     
-    means_area = all_area.groupby('Release_rate').mean()
-    means_max = all_max.groupby('Release_rate').mean()
-    median_area = all_area.groupby('Release_rate').median()
-    median_max = all_max.groupby('Release_rate').median()
+#     means_area = all_area.groupby('Release_rate').mean()
+#     means_max = all_max.groupby('Release_rate').mean()
+#     median_area = all_area.groupby('Release_rate').median()
+#     median_max = all_max.groupby('Release_rate').median()
 
-    return means_area, means_max, median_area, median_max
+#     return means_area, means_max, median_area, median_max
 
 def mean_and_median_log(all_area,all_max):
     all_area = pd.concat(all_area)
